@@ -1,0 +1,57 @@
+Items which have identical names but multiple sources.
+
+Malt's the Draft
+----------------
+    675 - Menu item, used in bars.  Icon is a bottle
+    1014 - Menu item, used at Gindaco Highball Sakaba.  Icon is a poured glass
+    1006 - Consumable item purchaseable in stores, icon is a can.  Also
+           the name for this one is just "Malt's"
+
+Kakubin
+-------
+    1007 - Consumable item purchaseable in stores
+    1137 - Menu item, used in bars
+
+Chasu Ramen
+-----------
+    1134 - Consumable item purchaseable in stores
+    888 - Menu item, used at Kinryu Ramen.  Icon has red background.
+    803 - Menu item, used at Tengokuken.  Icon has white background.
+
+Octopus
+-------
+    79 - Item that can be caught by fishing
+    902 - Menu item, used at Kushikatsu Daruma
+
+Sushi Set
+---------
+    721 - Consumable item purchaseable in stores
+    932 - Menu item, used at Ganko Sushi
+
+Oolong Tea
+----------
+    777 - Menu item, used at Gindaco Highball Sakaba
+    1032 - Menu item, used at Yoronotaki
+    1124 - Menu item, used at Karaoke bars
+
+Draft Beer
+----------
+    1031 - Menu item, used at Yoronotaki
+    1112 - Menu item, used at Maharaja
+    1123 - Menu item, used at Karaoke bars
+
+Champagne
+---------
+    40 - Consumable item purchaseable in stores
+    1113 - Menu item, used at Maharaja
+
+Edamame
+-------
+    1048 - Menu item, used at Yoronotaki
+    1118 - Menu item, used at Karaoke bars
+
+Yakisoba
+--------
+    873 - Menu item, used at Tsuruhashi Fugetsu
+    1121 - Menu item, used at Utahime Karaoke bar
+
