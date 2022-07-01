@@ -68,6 +68,7 @@ class ItemDesc:
         self.hard_idx = hard_idx
         self.max_in_inv = max_in_inv
         self.max_in_box = max_in_box
+        self.char_lock = char_lock
 
         # Hardcodes here to save some verbosity when defining items
         if self.item_type == ItemType.MENU:
