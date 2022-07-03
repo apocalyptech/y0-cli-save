@@ -609,7 +609,6 @@ class HostessRoster:
     
     def __init__(self, df):
         self.df = df
-        #self.cp = self.df.u16_attr(self.pos.cp)
         
     def update_hostess_by_name(self, name, *args, **kwargs):
         global hostesses_by_name

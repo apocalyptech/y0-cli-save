@@ -152,7 +152,7 @@ def main():
     parser.add_argument('--add-all-gear',
             action='store_true',
             help="""Add one of every piece of gear to the specified char's Item Box (if there is room).
-                Will imply --box for amoney_grp.add_argument('--money',ny other items added at the same time, too."""
+                Will imply --box for any other items added at the same time, too."""
             )
 
     parser.add_argument('--add-all-pocket-circuit',
