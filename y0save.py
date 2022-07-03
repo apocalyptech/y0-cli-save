@@ -152,7 +152,7 @@ def main():
     parser.add_argument('--add-all-gear',
             action='store_true',
             help="""Add one of every piece of gear to the specified char's Item Box (if there is room).
-                Will imply --box for any other items added at the same time, too."""
+                Will imply --box for amoney_grp.add_argument('--money',ny other items added at the same time, too."""
             )
 
     parser.add_argument('--add-all-pocket-circuit',
@@ -180,9 +180,33 @@ def main():
                 This option can be specified more than once, and/or be a comma-separated list.""",
             )
 
+    parser.add_argument('--hostess-name',
+            type=str,
+            action='append',
+            help="""Set the level of the specified cabaret hostess(es) by name.
+                This option can be specified more than once, and/or be a comma-separated list.""",
+            )
+
+    parser.add_argument('--hostess-id',
+            type=str,
+            action='append',
+            help="""Set the level of the specified cabaret hostess(es) by id.
+                This option can be specified more than once, and/or be a comma-separated list.""",
+            )
+
     parser.add_argument('--box',
             action='store_true',
             help="If adding items, store in Item Box instead of inventory, if appropriate.",
+            )
+
+    parser.add_argument('--level',
+            type=int,
+            help="Level to set specified hostess(es) to.",
+            )
+
+    parser.add_argument('--sales',
+            type=int,
+            help="Total sales to set specified hostess(es) to.",
             )
 
     qty_grp = parser.add_mutually_exclusive_group()
@@ -214,7 +238,15 @@ def main():
         args.cp = 0
     if args.qty is not None and args.qty < 1:
         args.qty = 1
-
+    
+    if args.level is not None and args.level < 1:
+        args.level = 1
+    if args.level is not None and args.level > 40:
+        args.level = 40
+    if args.sales is not None and args.sales < 0:
+        args.sales = 0
+    
+    
     # Some arg dependencies
     if args.money_max:
         args.money = 9999999999999
@@ -239,6 +271,29 @@ def main():
         for item_name_list in args.add_item_name:
             item_names.extend([s.strip() for s in item_name_list.split(',')])
         args.add_item_name = item_names
+
+    # Consolidate adding hostess IDs
+    if args.hostess_id:
+        hostess_ids = []
+        for hostess_list in args.hostess_id:
+            for hostess_id_str in hostess_list.split(','):
+                try:
+                    hostess_id = int(hostess_id_str.strip())
+                except ValueError as e:
+                    parser.error('Hostess IDs must be integers ({} is invalid)'.format(hostess_id_str))
+                if hostess_id < 1:
+                    parser.error('Hostess IDs must be positive ({} is invalid)'.format(hostess_id_str))
+                if hostess_id > 30:
+                    parser.error('Hostess ID out of range ({} is invalid)'.format(hostess_id_str))
+                hostess_ids.append(hostess_id)
+        args.hostess_id = hostess_ids
+
+    # Consolidate adding item names
+    if args.hostess_name:
+        hostess_names = []
+        for hostess_name_list in args.hostess_name:
+            hostess_names.extend([s.strip() for s in hostess_name_list.split(',')])
+        args.hostess_name = hostess_names
 
     # Support our adding of all weapons/gear
     if args.add_all_weapons or args.add_all_gear:
@@ -381,6 +436,20 @@ def main():
                 for item_name in args.add_item_name:
                     # This method does its own status printing
                     char.add_item_by_name(item_name, qty=args.qty, max_qty=args.qty_max, to_box=args.box)
+            done_updates = True
+
+        # Leveling and setting sales for hostess(es) (by ID)
+        if args.hostess_id:
+            for hostess_id in sorted(args.hostess_id):
+                # This method does its own status printing
+                save.hostess_roster.update_hostess_by_id(hostess_id, level=args.level, sales=args.sales)
+            done_updates = True
+
+        # Leveling and setting sales for hostess(es) (by Name)
+        if args.hostess_name:
+            for hostess_name in args.hostess_name:
+                # This method does its own status printing
+                save.hostess_roster.update_hostess_by_name(hostess_name, level=args.level, sales=args.sales)
             done_updates = True
 
         # Adding all Pocket Circuit

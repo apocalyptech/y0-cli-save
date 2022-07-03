@@ -33,6 +33,7 @@ import re
 import struct
 from . import PC
 from y0.itemregistry import ItemType, reg, items_by_id, items_by_name
+from y0.hostess import hostess_reg, hostesses_by_id, hostesses_by_name, xp_levels
 
 # So it looks like these files are unencrypted and uncompressed,
 # all the info *appears* to be stored at absolute positions in
@@ -604,6 +605,36 @@ class Char:
             print(f' - Saving {new_qty}x {report}{extra_str} in {inv.label} at idx {insert_idx}')
             inv.overwrite_item_at(insert_idx, item_id, item, new_qty, ammo, strikes)
 
+class HostessRoster:
+    
+    def __init__(self, df):
+        self.df = df
+        #self.cp = self.df.u16_attr(self.pos.cp)
+        
+    def update_hostess_by_name(self, name, *args, **kwargs):
+        global hostesses_by_name
+        
+        name_lower = name.lower()
+        if name_lower in hostesses_by_name:
+            self.update_hostess_by_id(hostesses_by_name[name_lower].hostess_id, *args, **kwargs)
+        else:
+            print(' - ERROR: Hostess "{}" not found, cannot update'.format(name))
+
+    def update_hostess_by_id(self, hostess_id, level=None, sales=None):
+        global hostesses_by_id
+        
+        if hostess_id in hostesses_by_id:
+            hostess = hostesses_by_id[hostess_id]
+            if level is not None:
+                level = str(min(level, hostess.max_level))
+                xp = self.df.u32_attr(hostess.xp_pos)
+                xp.val = xp_levels[level]
+                print(f'Setting hostess {hostess.name} to level {level}.')
+            if sales is not None:
+                yen = self.df.u32_attr(hostess.sales_pos)
+                yen.val = sales
+                print(f'Setting hostess {hostess.name} sales {sales}.')
+
 class NotASavegameException(Exception):
     pass
 
@@ -734,6 +765,9 @@ class Savegame:
             special_qty=96,
             ))
         self.chars = [self.kiryu, self.majima]
+        
+        # Hostesses
+        self.hostess_roster = HostessRoster(self.df)
 
     def write_to(self, *args, **kwargs):
         self.df.write_to(*args, **kwargs)
