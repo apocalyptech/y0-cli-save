@@ -203,6 +203,14 @@ def main():
             type=int,
             help="Level to set specified hostess(es) to.",
             )
+    
+    parser.add_argument('--fast-level',
+            action='store_true',
+            help="""When changing a hostesses level set the XP total to be 1 less than the requested level.
+                So, for example, if you reqested Yuki to be level 40, this option would set her to be level
+                39 with 1 xp left to go to level 40. This is useful to get the CP award for getting a
+                platinum hostess to max level. This option has no effect if the requested level is 1.""",
+            )
 
     parser.add_argument('--sales',
             type=int,
@@ -442,14 +450,20 @@ def main():
         if args.hostess_id:
             for hostess_id in sorted(args.hostess_id):
                 # This method does its own status printing
-                save.hostess_roster.update_hostess_by_id(hostess_id, level=args.level, sales=args.sales)
+                save.hostess_roster.update_hostess_by_id(hostess_id,
+                                                         level=args.level,
+                                                         sales=args.sales,
+                                                         fast=args.fast_level)
             done_updates = True
 
         # Leveling and setting sales for hostess(es) (by Name)
         if args.hostess_name:
             for hostess_name in args.hostess_name:
                 # This method does its own status printing
-                save.hostess_roster.update_hostess_by_name(hostess_name, level=args.level, sales=args.sales)
+                save.hostess_roster.update_hostess_by_name(hostess_name,
+                                                           level=args.level,
+                                                           sales=args.sales,
+                                                           fast=args.fast_level)
             done_updates = True
 
         # Adding all Pocket Circuit

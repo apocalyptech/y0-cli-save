@@ -619,7 +619,7 @@ class HostessRoster:
         else:
             print(' - ERROR: Hostess "{}" not found, cannot update'.format(name))
 
-    def update_hostess_by_id(self, hostess_id, level=None, sales=None):
+    def update_hostess_by_id(self, hostess_id, level=None, sales=None, fast=False):
         global hostesses_by_id
         
         if hostess_id in hostesses_by_id:
@@ -627,12 +627,17 @@ class HostessRoster:
             if level is not None:
                 level = str(min(level, hostess.max_level))
                 xp = self.df.u32_attr(hostess.xp_pos)
-                xp.val = xp_levels[level]
-                print(f'Setting hostess {hostess.name} to level {level}.')
+                if fast == False or (fast == True and level == "1"):
+                    xp.val = xp_levels[level]
+                    print(f'Setting hostess {hostess.name} to level {level}.')
+                else:
+                    xp.val = xp_levels[level] - 1
+                    print(f'Setting hostess {hostess.name} to level {int(level)-1} with 1XP remaining to level up.')
+                    
             if sales is not None:
                 yen = self.df.u32_attr(hostess.sales_pos)
                 yen.val = sales
-                print(f'Setting hostess {hostess.name} sales {sales}.')
+                print(f'Setting hostess {hostess.name} sales to {sales} yen.')
 
 class NotASavegameException(Exception):
     pass
