@@ -22,7 +22,6 @@ more or less a TODO in case I ever become re-energized about it):
  - Abilities editing (arbitrary Legendary style unlocks, etc)
  - Completion editing (mark arcade games / gambling as complete, etc)
  - Levelling of real estate properties
- - Levelling of cabaret club hostesses
  - Set difficulty (easy enough, could be done with just a few edits)
  - Reload/repair all weapons (also easy enough)
 
@@ -95,6 +94,18 @@ Here's the output of running `y0save.py --help`:
 							inventory area, if there is room. This option can be
 							specified more than once, and/or be a comma-separated
 							list.
+		--hostess-id HOSTESS_ID
+							Specify the hostess(es) by id to set their level and total
+							sales. This option can be specified more than once, and/or
+							be a comma-separated list.
+		--hostess-name HOSTESS_NAME
+							Specify the hostess(es) by name to set their level and total
+							sales. This option can be specified more than once, and/or
+							be a comma-separated list.
+		--level LEVEL         If setting hostess levels, use this value to set the level.
+							Platinum hostesses have a max level of 40. All others have a max level
+							of 30
+		--sales SALES         If setting hostess total sales, use this value to set the sales.
 	  --box                 If adding items, store in Item Box instead of
 							inventory, if appropriate.
 	  --qty QTY             If adding items, use this quantity if supported by the
